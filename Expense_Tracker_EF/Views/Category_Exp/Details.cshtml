@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Expense_Tracker_EF.Models.ViewModel>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>
+    <span class="text-slider-items" hidden>
+        Category Details
+    </span>
+    <strong class="text-slider"></strong>
+</h2>
+
+<div>
+    <h4>Category Expense</h4>
+    <hr />
+
+    <table class="table table-striped table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+
+                <th>Where you Spend</th>
+                <th>Description</th>
+                <th>Expense Limit</th>
+                <th>Amount You Spend</th>
+                <th>Remaining Amount Limit</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @{ var ActCategory_Exp =0; }
+            @foreach (var item in Model)
+            {
+                ActCategory_Exp =Convert.ToInt32(item.Category_Exp.Category_Exp_Limit);
+                break;
+            }
+            @if (ActCategory_Exp > 0)
+            {
+                foreach (var item in Model)
+                {
+
+                    item.Category_Exp.Category_Exp_Limit = item.Category_Exp.Category_Exp_Limit - item.expens.Amount;
+                    <tr>
+                        <td>@item.expens.Title</td>
+                        <td>@item.expens.Description</td>
+                        <td>@ActCategory_Exp</td>
+                        <td>@item.expens.Amount</td>
+                        <td>@item.Category_Exp.Category_Exp_Limit</td>
+                    </tr>
+
+                }
+            }
+            else {
+                <h3>You Don't spend any amount on this Category</h3>
+                <script>
+                    document.getElementsByTagName("table")[0].hidden = true;
+                </script>
+            }
+            </tbody>
+    </table>
+</div>
+

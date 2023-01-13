@@ -1,0 +1,37 @@
+﻿@model Expense_Tracker_EF.Models.Total_Expense_Limit
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>
+    <span class="text-slider-items" hidden>
+        Delete Total Expense Limit
+    </span>
+    <strong class="text-slider"></strong>
+</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Total Expense Limit</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalExpenseLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalExpenseLimit)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default",new { onclick = "return confirm('Are you sure you want to delete this record??')" } /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

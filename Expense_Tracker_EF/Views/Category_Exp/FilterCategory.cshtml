@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Expense_Tracker_EF.Models.expens>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>
+    <span class="text-slider-items" hidden>
+        Filter Category
+    </span>
+    <strong class="text-slider"></strong>
+</h2>
+<center><label>Please Select Any Category:</label></center>
+<center>@Html.DropDownList("cid", null, "Please Select", htmlAttributes: new { @class = "form-control", id = "ddlCategory" })</center>
+
+
+<table class="table" id="tblCategory" hidden>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<center><h1>No Record Found</h1></center>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('[id*=ddlCategory]').change(function () {
+            var selectedCategory = $(this).find('option:selected').val();
+            var selectedCategoryName = $(this).find('option:selected').text();
+            document.getElementsByTagName("h2")[0].innerHTML = selectedCategoryName;
+            if (selectedCategory != null && selectedCategory != '') {
+                $.getJSON('../Category_Exp/GetResults', { id: selectedCategory }, function (response) {
+                    if (response.length > 0) {
+                        $("[id*=tblCategory] tbody").empty();
+                        var row;
+                        $.each(response, function (index, item) {
+                            row += "<tr><td>" + item.Title + "</td><td>" + item.Description + "</td><td>" + item.Amount + "</td></tr>"
+                        })
+                        $("[id*=tblCategory] tbody").append(row);
+                        document.getElementById("tblCategory").hidden = false;
+                        document.getElementsByTagName("h1")[0].hidden = true;
+
+
+                    }
+                    else {
+                        document.getElementById("tblCategory").hidden = true;
+                        document.getElementsByTagName("h1")[0].hidden = false
+                    }
+                });
+            }
+        });
+    });
+</script>
+

@@ -1,0 +1,31 @@
+﻿@model Expense_Tracker_EF.Models.Total_Expense_Limit
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>
+    <span class="text-slider-items" hidden>
+        Details of Total Expense Limit
+    </span>
+    <strong class="text-slider"></strong>
+</h2>
+
+<div>
+    <h4>Total Expense Limit</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalExpenseLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalExpenseLimit)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

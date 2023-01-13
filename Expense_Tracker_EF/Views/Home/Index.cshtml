@@ -1,0 +1,157 @@
+﻿@model Expense_Tracker_EF.Models.IeViewModel
+@{
+    ViewBag.Title = "About";
+}
+
+<h2 style="position:center">
+    <span class="text-slider-items" hidden>
+       Pie Chart on Category
+    </span>
+    <strong class="text-slider"></strong>
+</h2>
+<div id="pieChart"> </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="~/Scripts/c3.min.js"></script>
+<script src="~/Scripts/d3.min.js"></script>
+<link href="~/Content/c3.css" rel="stylesheet" />
+<div class="tab-content">
+    <div class="tab-pane container active p-0" id="home">
+        <h5 class="text-uppercase p-2 text-center">List of Category</h5>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark text-white">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => Model.Category_Exp.FirstOrDefault().Category_Name)</th>
+                    <th>@Html.DisplayNameFor(m => Model.Category_Exp.FirstOrDefault().Category_Exp_Limit)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{int AmountUsedinCategory = 0; }
+                @foreach (var item in Model.Category_Exp)
+                {
+                    AmountUsedinCategory += Convert.ToInt32(item.Category_Exp_Limit);
+
+                    <tr>
+                        <td>@Html.ActionLink(item.Category_Name, "../Category_Exp/Details", new { id = item.Id })</td>
+                        <td>@item.Category_Exp_Limit</td>
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane container active p-0" id="menu1">
+        <h5 class="text-uppercase p-2 text-center">List of Expenses</h5>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark text-white">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => Model.expens.FirstOrDefault().Title)</th>
+                    <th>@Html.DisplayNameFor(m => Model.expens.FirstOrDefault().Description)</th>
+                    <th>@Html.DisplayNameFor(m => Model.expens.FirstOrDefault().Amount)</th>
+                    <th>@Html.DisplayNameFor(m => Model.expens.FirstOrDefault().ExpDate)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int Total_Expense = 0;}
+                @foreach (var item in Model.expens)
+                {
+                    Total_Expense += Convert.ToInt32(item.Amount);
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>@item.Amount</td>
+                        <td>@item.ExpDate</td>
+                    </tr>
+
+                }
+                <tr>
+                    <td colspan="2" style="text-align:center">Total Expense</td>
+                    <td colspan="2">@Total_Expense</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="tab-pane container active p-0" id="menu1">
+        <h5 class="text-uppercase p-2 text-center">Total Expense Limit</h5>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark text-white">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => Model.Total_Expense_Limit.FirstOrDefault().TotalExpenseLimit)</th>
+                    <th>@Html.DisplayName("Amount Already Used")</th>
+                    <th>@Html.DisplayName("Amount Not Used")</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int AmountOfExpenseLimit = 0;}
+                @foreach (var item in Model.Total_Expense_Limit)
+                {
+                   AmountOfExpenseLimit+= Convert.ToInt32(item.TotalExpenseLimit);                   
+                }
+                @{ int AmountNotUsed = AmountOfExpenseLimit-AmountUsedinCategory;}
+                <tr>
+                    <td>@AmountOfExpenseLimit</td>
+                    <td>@AmountUsedinCategory</td>
+                    <td>@AmountNotUsed</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetChart",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                successFunc(response);
+            },
+        });
+
+        function successFunc(jsondata) {
+            var data = {};
+            var categoryNames = [];
+            jsondata.forEach(function (e) {
+                categoryNames.push(e.Title);
+                data[e.Title] = e.Amount;
+            })
+            if (categoryNames.length > 0) {
+                var chart = c3.generate({
+                    bindto: '#pieChart',
+                    data: {
+                        json: [data],
+                        keys: {
+                            value: categoryNames,
+                        },
+                        type: 'pie',
+
+                    },
+                    color: {
+                        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+                    },
+                    pie: {
+                        label: {
+                            format: function (value, ratio, id) {
+                                return value;
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+                const h3 = document.createElement("H3");
+                const textNode = document.createTextNode("Sorry we can't generate chart...because we don't have sufficient Data");
+                h3.appendChild(textNode);
+                h3.style.textAlign = "center"
+                document.body.appendChild(h3)
+            }
+        }
+    });</script>

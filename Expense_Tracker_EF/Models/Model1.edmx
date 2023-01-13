@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Expense_TrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category_Exp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Category_Exp_Limit" Type="int" />
+        </EntityType>
+        <EntityType Name="expenses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="cid" Type="int" />
+          <Property Name="ExpDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Total_Expense_Limit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TotalExpenseLimit" Type="int" />
+        </EntityType>
+        <Association Name="FK_Category_Expenses">
+          <End Role="Category_Exp" Type="Self.Category_Exp" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="expenses" Type="Self.expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_Exp">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="expenses">
+              <PropertyRef Name="cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="delCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="delExpense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="INS_exp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="title" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="amount" Type="int" Mode="In" />
+          <Parameter Name="cid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="INSCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Cname" Type="varchar" Mode="In" />
+          <Parameter Name="Cat_exp_limit" Type="int" Mode="In" />
+        </Function>
+        <Function Name="INSCategory_new" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cname" Type="varchar" Mode="In" />
+          <Parameter Name="Cat_exp_limit" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SelectAllCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Update_Category" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="category_name" Type="varchar" Mode="In" />
+          <Parameter Name="expense_limit" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Update_Expenses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="title" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="amount" Type="int" Mode="In" />
+          <Parameter Name="catid" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Expense_TrackerModelStoreContainer">
+          <EntitySet Name="Category_Exp" EntityType="Self.Category_Exp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="expenses" EntityType="Self.expenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Total_Expense_Limit" EntityType="Self.Total_Expense_Limit" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Category_Expenses" Association="Self.FK_Category_Expenses">
+            <End Role="Category_Exp" EntitySet="Category_Exp" />
+            <End Role="expenses" EntitySet="expenses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Expense_TrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category_Exp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Category_Exp_Limit" Type="Int32" />
+          <NavigationProperty Name="expenses" Relationship="Self.FK_Category_Expenses" FromRole="Category_Exp" ToRole="expenses" />
+        </EntityType>
+        <EntityType Name="expens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="cid" Type="Int32" />
+          <NavigationProperty Name="Category_Exp" Relationship="Self.FK_Category_Expenses" FromRole="expenses" ToRole="Category_Exp" />
+          <Property Name="ExpDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Category_Expenses">
+          <End Role="Category_Exp" Type="Self.Category_Exp" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="expenses" Type="Self.expens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_Exp">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="expenses">
+              <PropertyRef Name="cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Expense_TrackerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category_Exp" EntityType="Self.Category_Exp" />
+          <EntitySet Name="expenses" EntityType="Self.expens" />
+          <AssociationSet Name="FK_Category_Expenses" Association="Self.FK_Category_Expenses">
+            <End Role="Category_Exp" EntitySet="Category_Exp" />
+            <End Role="expenses" EntitySet="expenses" />
+          </AssociationSet>
+          <FunctionImport Name="delCategory">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="delExpense">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="INS_exp">
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="amount" Mode="In" Type="Int32" />
+            <Parameter Name="cid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="INSCategory">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Cname" Mode="In" Type="String" />
+            <Parameter Name="Cat_exp_limit" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="INSCategory_new">
+            <Parameter Name="Cname" Mode="In" Type="String" />
+            <Parameter Name="Cat_exp_limit" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SelectAllCategory" ReturnType="Collection(Expense_TrackerModel.SelectAllCategory_Result)" />
+          <FunctionImport Name="Update_Category">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="category_name" Mode="In" Type="String" />
+            <Parameter Name="expense_limit" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Update_Expenses">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="amount" Mode="In" Type="Int32" />
+            <Parameter Name="catid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Total_Expense_Limit" EntityType="Expense_TrackerModel.Total_Expense_Limit" />
+        </EntityContainer>
+        <ComplexType Name="SelectAllCategory_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Category_Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Category_Exp_Limit" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Total_Expense_Limit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TotalExpenseLimit" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Expense_TrackerModelStoreContainer" CdmEntityContainer="Expense_TrackerEntities">
+          <EntitySetMapping Name="Category_Exp">
+            <EntityTypeMapping TypeName="Expense_TrackerModel.Category_Exp">
+              <MappingFragment StoreEntitySet="Category_Exp">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Category_Name" ColumnName="Category_Name" />
+                <ScalarProperty Name="Category_Exp_Limit" ColumnName="Category_Exp_Limit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="expenses">
+            <EntityTypeMapping TypeName="Expense_TrackerModel.expens">
+              <MappingFragment StoreEntitySet="expenses">
+                <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="cid" ColumnName="cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="delCategory" FunctionName="Expense_TrackerModel.Store.delCategory" />
+          <FunctionImportMapping FunctionImportName="delExpense" FunctionName="Expense_TrackerModel.Store.delExpense" />
+          <FunctionImportMapping FunctionImportName="INS_exp" FunctionName="Expense_TrackerModel.Store.INS_exp" />
+          <FunctionImportMapping FunctionImportName="INSCategory" FunctionName="Expense_TrackerModel.Store.INSCategory" />
+          <FunctionImportMapping FunctionImportName="INSCategory_new" FunctionName="Expense_TrackerModel.Store.INSCategory_new" />
+          <FunctionImportMapping FunctionImportName="SelectAllCategory" FunctionName="Expense_TrackerModel.Store.SelectAllCategory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Expense_TrackerModel.SelectAllCategory_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Category_Name" ColumnName="Category_Name" />
+                <ScalarProperty Name="Category_Exp_Limit" ColumnName="Category_Exp_Limit" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Update_Category" FunctionName="Expense_TrackerModel.Store.Update_Category" />
+          <FunctionImportMapping FunctionImportName="Update_Expenses" FunctionName="Expense_TrackerModel.Store.Update_Expenses" />
+          <EntitySetMapping Name="Total_Expense_Limit">
+            <EntityTypeMapping TypeName="Expense_TrackerModel.Total_Expense_Limit">
+              <MappingFragment StoreEntitySet="Total_Expense_Limit">
+                <ScalarProperty Name="TotalExpenseLimit" ColumnName="TotalExpenseLimit" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
