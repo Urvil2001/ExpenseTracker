@@ -25,7 +25,7 @@ step6: open the index.cshtml from the Home directory <br/>
 
 To solve this Error 
 step1: Open Nuget Package manager console from tools
-step2: And type below command in package manager console
+step2: And type below command in package manager console <br>
      Command is:-Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
 
 ## Screenshots
