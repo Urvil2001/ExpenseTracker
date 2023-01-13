@@ -15,8 +15,18 @@
 step1: open visual studio step <br/>
 step2: install the prerequisites <br/>
 step3: load the project step <br/>
-step4: run the program step <br/>
-step5: open the index.cshtml from the Home directory <br/>
+step4: change datasource name in web.config file
+![Screenshot 2023-01-14 000731](https://user-images.githubusercontent.com/110552993/212394672-6db38a4d-6b61-4f79-bffc-5ab9e8cb7278.png)
+step5: run the program step <br/>
+step6: open the index.cshtml from the Home directory <br/>
+
+## Suppose if you getting this type error
+![WhatsApp Image 2023-01-14 at 12 17 15 AM](https://user-images.githubusercontent.com/110552993/212396083-5e1ab3b8-b5c5-4fdb-9265-966f08535a05.jpeg)
+
+To solve this Error 
+step1: Open Nuget Package manager console from tools
+step2: And type below command in package manager console
+     Command is:-Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
 
 ## Screenshots
 ![Screenshot (185)](https://user-images.githubusercontent.com/110552993/212375573-457f488d-2595-47ca-8388-80165eefa02c.png)
